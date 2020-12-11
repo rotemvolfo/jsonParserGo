@@ -21,31 +21,33 @@ func main() {
 
 	configFilePtr, err := os.Open(configFName)
 	if err != nil {
-		fmt.Printf("faild to open file- %s:\n", configFName)
 		panic(err)
 	}
 	defer configFilePtr.Close()
 
-	jsonConfig := parser.ReadJSON(configFilePtr)
+	jsonConfig, err := parser.ReadJSON(configFilePtr)
 	input, err := os.Open(inputFName)
 	if err != nil {
-		fmt.Printf("faild to open file- %s:\n", inputFName)
 		panic(err)
 	}
 	defer input.Close()
 
-	data := parser.ReadJSON(input)
+	data, err := parser.ReadJSON(input)
+	if err != nil {
+		panic(err)
+	}
 	for _, jsonObj := range data.([]map[string]interface{}) {
 		parser.Filter(jsonObj, jsonConfig.([]map[string]interface{})[0])
-
 	}
 	output, err := os.Create(outFName)
 	if err != nil {
-		fmt.Printf("failed to create new file - %s ", outFName)
+		fmt.Printf("failed to create new file - %v ", err)
 	}
 	defer output.Close()
 
-	parser.WriteJSON(data, output)
+	if err := parser.WriteJSON(data, output); err != nil {
+		fmt.Printf("couldn't write json: %v\n", err)
+	}
 	fmt.Println(data)
 
 }

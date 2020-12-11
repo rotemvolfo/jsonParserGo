@@ -1,0 +1,5 @@
+{
+    "name": {"newkey": "title", "transform": "lower"},
+    "a": {"filter":"remove"}
+}
+

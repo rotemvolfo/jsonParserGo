@@ -18,7 +18,7 @@ var transformFunctionsMap = map[string]func(param ...string) (error, string){
 	},
 }
 
-func ReadJSON(reader io.Reader) (interface{}, error) {
+func ReadJSON(reader io.Reader) ([]map[string]interface{}, error) {
 
 	decoder := json.NewDecoder(reader)
 	arrJSON := []map[string]interface{}{}
@@ -27,7 +27,7 @@ func ReadJSON(reader io.Reader) (interface{}, error) {
 		if err := decoder.Decode(&mapObject); err == io.EOF {
 			break
 		} else if err != nil {
-			return 0, err
+			return nil, err
 		}
 		arrJSON = append(arrJSON, mapObject)
 	}

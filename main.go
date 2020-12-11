@@ -36,8 +36,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	for _, jsonObj := range data.([]map[string]interface{}) {
-		parser.Filter(jsonObj, jsonConfig.([]map[string]interface{})[0])
+	for _, jsonObj := range data {
+		parser.Filter(jsonObj, jsonConfig[0])
 	}
 	output, err := os.Create(outFName)
 	if err != nil {

@@ -35,14 +35,14 @@ func main() {
 	defer input.Close()
 
 	writerCh := make(chan map[string]interface{})
-	ReaderTofilterCh := make(chan map[string]interface{}, 2)
+	readerTofilterCh := make(chan map[string]interface{})
 
 	go func() {
-		optimizeParser.ReadJSONAndSendOverChannel(input, ReaderTofilterCh)
+		optimizeParser.ReadJSONAndSendOverChannel(input, readerTofilterCh)
 		wg.Done()
 	}()
 	go func() {
-		optimizeParser.ProcessjsonUsingConfig(jsonConfig[0], ReaderTofilterCh, writerCh)
+		optimizeParser.ProcessjsonUsingConfig(jsonConfig[0], readerTofilterCh, writerCh)
 		wg.Done()
 	}()
 	output, err := os.Create(outFName)

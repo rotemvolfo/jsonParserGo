@@ -23,19 +23,19 @@ func ReadJSONAndSendOverChannel(reader io.Reader, c chan map[string]interface{})
 	return nil
 }
 
-func ProcessjsonUsingConfig(config map[string]interface{}, reciverCh, writerCh chan map[string]interface{}) {
+func ProcessjsonUsingConfig(config map[string]interface{}, receiverCh, writerCh chan map[string]interface{}) {
 
-	for data := range reciverCh {
+	for data := range receiverCh {
 		parser.Filter(data, config)
 		writerCh <- data
 	}
 	defer close(writerCh)
 }
 
-func GetDataFromChannelAndWriteJSON(reciver chan map[string]interface{}, writer io.Writer) error {
+func GetDataFromChannelAndWriteJSON(receiver chan map[string]interface{}, writer io.Writer) error {
 
 	enc := json.NewEncoder(writer)
-	for data := range reciver {
+	for data := range receiver {
 		if err := enc.Encode(data); err != nil {
 			return err
 		}
